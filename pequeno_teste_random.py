@@ -4,7 +4,7 @@ import pequeno_mundo as pm
 
 class RandomTestPequenoMundo(unittest.TestCase):
     def setUp(self):
-        self.n = random.randint(10, 1000)
+        self.n = random.randint(10, 3000)
         self.k = random.randint(1, min(10, self.n))
         self.p = round(random.uniform(0, 1), 2)
         self.peso_min = random.uniform(1.0, 5.0)

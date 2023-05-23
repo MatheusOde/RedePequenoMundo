@@ -28,5 +28,4 @@ class TestPequenoMundo(unittest.TestCase):
             self.assertEqual(caminho[0][0], self.origem)
             self.assertEqual(caminho[-1][-1], self.destino)
 
-if __name__ == '__main__':
-    unittest.main()
+unittest.main()

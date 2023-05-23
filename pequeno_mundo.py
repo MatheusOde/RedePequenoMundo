@@ -48,8 +48,8 @@ def busca_em_largura_rede(rede, origem, destino):
 
 def imprime_rede(rede):
     # Imprime a rede gerada
-    print("Vértices: ", rede.nodes())
-    print("Arestas: ", rede.edges())
+    # print("Vértices: ", rede.nodes())
+    # print("Arestas: ", rede.edges())
 
     nx.draw(rede)
     nx.draw_circular(rede, with_labels=True)
