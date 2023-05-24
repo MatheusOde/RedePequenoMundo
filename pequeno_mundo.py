@@ -2,7 +2,7 @@ import networkx as nx
 import random
 import matplotlib.pyplot as plt
 import time
-
+import queue
 # Gera rede Pequeno Mundo com peso aleatório
 
 
@@ -41,7 +41,7 @@ def busca_em_largura_rede(rede, origem, destino):
         print("Caminho percorrido da origem ao destino:")
         for u, v in caminho_percurso:
             print(u, "->", v)
-        print("Tempo para executar a busca: ",
+        print("Tempo para executar a busca em largura: ",
               time.time() - start_time, "segundos.")
         return caminho_percurso
     except nx.NetworkXNoPath:
@@ -73,7 +73,7 @@ def busca_em_profundidade_rede(rede, origem, destino):
             print("Não foi encontrado um caminho da origem ao destino.")
             caminho_percurso = None
 
-        print("Tempo para executar a busca: ",
+        print("Tempo para executar a busca em profundidade: ",
               time.time() - start_time, "segundos.")
         return caminho_percurso
     except nx.NetworkXNoPath:
@@ -81,6 +81,71 @@ def busca_em_profundidade_rede(rede, origem, destino):
         print("Tempo para executar a busca: ",
               time.time() - start_time, "segundos.")
         return None
+
+# Best first
+
+
+def busca_best_first_search_rede(rede, origem, destino):
+    start_time = time.time()
+
+    visited = set()
+    fila = queue.PriorityQueue()
+
+    fila.put((0, origem))
+
+    while not fila.empty():
+        _, current_node = fila.get()
+
+        if current_node == destino:
+            caminho = nx.shortest_path(rede, origem, destino)
+            caminho_percurso = [(caminho[i], caminho[i+1])
+                                for i in range(len(caminho)-1)]
+            print("Caminho percorrido da origem ao destino:")
+            for u, v in caminho_percurso:
+                print(u, "->", v)
+            print("Tempo para executar a busca best first: ",
+                  time.time() - start_time, "segundos.")
+            return caminho_percurso
+
+        if current_node not in visited:
+            visited.add(current_node)
+
+            neighbors = list(rede.neighbors(current_node))
+            neighbors.sort(
+                key=lambda node: rede.edges[current_node, node]['weight'])
+
+            for neighbor in neighbors:
+                fila.put(
+                    (rede.edges[current_node, neighbor]['weight'], neighbor))
+
+    print("Não foi encontrado um caminho da origem ao destino.")
+    print("Tempo para executar a busca: ",
+          time.time() - start_time, "segundos.")
+    return None
+
+
+def busca_a_estrela_rede(rede, origem, destino):
+    start_time = time.time()
+
+    caminho = nx.astar_path(rede, origem, destino, heuristic=heuristica)
+
+    if caminho:
+        print("Caminho percorrido da origem ao destino:")
+        for u, v in caminho:
+            print(u, "->", v)
+        caminho_percurso = [(caminho[i], caminho[i+1])
+                            for i in range(len(caminho)-1)]
+        print("Tempo para executar a busca a estrela: ",
+              time.time() - start_time, "segundos.")
+        return caminho_percurso
+    else:
+        print("Tempo para executar a busca a estrela : ",
+              time.time() - start_time, "segundos.")
+        return None
+
+
+def heuristica(u, v):
+    return abs(u - v)
 
 
 def imprime_rede(rede):
