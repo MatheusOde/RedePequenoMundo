@@ -69,6 +69,15 @@ class RandomTestPequenoMundo(unittest.TestCase):
             self.assertEqual(caminho[0][0], self.origem)
             self.assertEqual(caminho[-1][-1], self.destino)
 
+    def test_busca_dijkstra_rede(self):
+        caminho = pm.busca_dijkstra(
+            self.rede, self.origem, self.destino)
+
+        # Teste: O caminho começa e termina nos nós corretos?
+        if caminho is not None:
+            self.assertEqual(caminho[0][0], self.origem)
+            self.assertEqual(caminho[-1][-1], self.destino)
+
 
 unittest.main(exit=False)
 pm.imprime_rede(RandomTestPequenoMundo.rede)

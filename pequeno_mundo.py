@@ -155,6 +155,26 @@ def heuristica(u, v):
     # retorna a distância Euclidiana entre os dois nós
     return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
 
+# busca  Dijkstra
+
+
+def busca_dijkstra(rede, origem, destino):
+    start_time = time.time()
+    caminho = nx.dijkstra_path(rede, origem, destino)
+    if caminho:
+        print("Caminho percorrido da origem ao destino:")
+        for i in range(len(caminho) - 1):  # ajuste aqui
+            print(caminho[i], "->", caminho[i+1])
+        caminho_percurso = [(caminho[i], caminho[i+1])
+                            for i in range(len(caminho)-1)]
+        print("Tempo para executar a busca dijkstra: ",
+              time.time() - start_time, "segundos.")
+        return caminho_percurso
+    else:
+        print("Tempo ate a falha da busca dijkstra : ",
+              time.time() - start_time, "segundos.")
+        return None
+
 
 def imprime_rede(rede):
     # Imprime a rede gerada

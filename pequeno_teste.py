@@ -6,7 +6,7 @@ class TestPequenoMundo(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.n = 20
-        cls.k = 4
+        cls.k = 3
         cls.p = 0.2
         cls.peso_min = 1.0
         cls.peso_max = 10.0
@@ -52,6 +52,15 @@ class TestPequenoMundo(unittest.TestCase):
 
     def test_busca_a_estrela_rede(self):
         caminho = pm.busca_a_estrela_rede(
+            self.rede, self.origem, self.destino)
+
+        # Teste: O caminho começa e termina nos nós corretos?
+        if caminho is not None:
+            self.assertEqual(caminho[0][0], self.origem)
+            self.assertEqual(caminho[-1][-1], self.destino)
+
+    def test_busca_dijkstra_rede(self):
+        caminho = pm.busca_dijkstra(
             self.rede, self.origem, self.destino)
 
         # Teste: O caminho começa e termina nos nós corretos?
