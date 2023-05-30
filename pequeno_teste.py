@@ -5,8 +5,8 @@ import pequeno_mundo as pm
 class TestPequenoMundo(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.n = 10
-        cls.k = 2
+        cls.n = 20
+        cls.k = 4
         cls.p = 0.2
         cls.peso_min = 1.0
         cls.peso_max = 10.0

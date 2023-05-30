@@ -1,16 +1,18 @@
 import networkx as nx
 import random
 import matplotlib.pyplot as plt
+import math
 import time
 import queue
 # Gera rede Pequeno Mundo com peso aleatório
+
+posicoes = {}
 
 
 def gerar_rede_pequeno_mundo(n, k, p, peso_min, peso_max):
     start_time = time.time()
     # Cria um rede de anel regular com k vizinhos para cada vértice
     rede = nx.random_regular_graph(k, n)
-
     # Adiciona pesos aleatórios às arestas
     for (u, v) in rede.edges():
         peso = random.uniform(peso_min, peso_max)
@@ -26,6 +28,8 @@ def gerar_rede_pequeno_mundo(n, k, p, peso_min, peso_max):
                 rede.add_edge(u, w, weight=random.uniform(peso_min, peso_max))
 
     print("Tempo para gerar a rede: ", time.time() - start_time, "segundos.")
+    global posicoes
+    posicoes = nx.circular_layout(rede)
     return rede
 
 # busca em largura
@@ -126,13 +130,13 @@ def busca_best_first_search_rede(rede, origem, destino):
 
 def busca_a_estrela_rede(rede, origem, destino):
     start_time = time.time()
-
-    caminho = nx.astar_path(rede, origem, destino, heuristic=heuristica)
+    caminho = nx.astar_path(rede, origem, destino,
+                            heuristic=heuristica, weight='peso')
 
     if caminho:
         print("Caminho percorrido da origem ao destino:")
-        for u, v in caminho:
-            print(u, "->", v)
+        for i in range(len(caminho) - 1):  # ajuste aqui
+            print(caminho[i], "->", caminho[i+1])
         caminho_percurso = [(caminho[i], caminho[i+1])
                             for i in range(len(caminho)-1)]
         print("Tempo para executar a busca a estrela: ",
@@ -145,13 +149,18 @@ def busca_a_estrela_rede(rede, origem, destino):
 
 
 def heuristica(u, v):
-    return abs(u - v)
+    # obtém as coordenadas x e y para cada nó
+    x1, y1 = posicoes[u]
+    x2, y2 = posicoes[v]
+    # retorna a distância Euclidiana entre os dois nós
+    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
 
 
 def imprime_rede(rede):
     # Imprime a rede gerada
     # print("Vértices: ", rede.nodes())
     # print("Arestas: ", rede.edges())
-    nx.draw(rede)
+    nx.draw(rede, with_labels=True)
+    plt.show()
     nx.draw_circular(rede, with_labels=True)
     plt.show()
